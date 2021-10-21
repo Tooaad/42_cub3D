@@ -11,7 +11,7 @@ SRCS			=	ft_memset.c			ft_bzero.c			ft_memcpy.c			ft_memccpy.c	\
 					ft_substr.c			ft_strjoin.c		ft_strtrim.c		ft_split.c		\
 					ft_itoa.c			ft_strmapi.c		ft_putchar_fd.c		ft_strcpy.c		\
 					ft_putstr_fd.c		ft_putendl_fd.c		ft_putnbr_fd.c		base.c			\
-					itoh.c				get_next_line.c		ft_newstr.c
+					itoh.c				get_next_line.c		ft_newstr.c			ft_memalloc.c
 
 OBJECTS			=	ft_memset.o			ft_bzero.o			ft_memcpy.o			ft_memccpy.o	\
 					ft_memmove.o		ft_memchr.o			ft_memcmp.o			ft_strlen.o		\
@@ -22,7 +22,7 @@ OBJECTS			=	ft_memset.o			ft_bzero.o			ft_memcpy.o			ft_memccpy.o	\
 					ft_substr.o			ft_strjoin.o		ft_strtrim.o		ft_split.o		\
 					ft_itoa.o			ft_strmapi.o		ft_putchar_fd.o		ft_strcpy.o		\
 					ft_putstr_fd.o		ft_putendl_fd.o		ft_putnbr_fd.o		base.o			\
-					itoh.o				get_next_line.o		ft_newstr.o
+					itoh.o				get_next_line.o		ft_newstr.o			ft_memalloc.o
 
 SRCS_BONUS		=	ft_lstnew_bonus.c		ft_lstadd_front_bonus.c		ft_lstsize_bonus.c		\
 					ft_lstlast_bonus.c		ft_lstadd_back_bonus.c		ft_lstdelone_bonus.c	\

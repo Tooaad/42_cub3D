@@ -6,7 +6,7 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 20:39:59 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/10/17 11:19:35 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/10/21 02:42:21 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,17 @@
 # include <fcntl.h>
 # include <mlx.h> 
 
-typedef struct s_point
-{
-	int				x;
-	int				y;
-	int				z;
-}					t_point;
-
 typedef struct s_map
 {
-	t_point			***grid;
+	char			**grid;
 	int				width;
 	int				height;
 }					t_map;
 
 typedef struct s_params
 {
-	t_map			*map;
+	char			*line;
+	t_map			map;
 	void			*win;
 	void			*mlx;
 	void			*img;
@@ -53,4 +47,12 @@ typedef struct s_params
 //
 void	exit_error(char *str);
 //
-void	parse_map(char *file, t_map *map, t_params	*params);
+void	parse_data(char *file, t_params *params);
+int		parse_info(t_params *params, int fd);
+char	*get_data(char *line, int d);
+int		parse_info_errors(t_params *params, int skip_lines);
+//
+void	get_map_size(int fd, t_params *params);
+void	get_map_values(int skip_lines, int fd, t_params *params);
+void	get_row_values(int i, int skip_lines, int fd, t_params *params);
+void	check_map(t_params *params);

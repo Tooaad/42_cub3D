@@ -6,11 +6,30 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 19:46:35 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/10/16 20:25:17 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/10/20 12:38:24 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../includes/cub3D.h" 
+
+void init_params(t_params *params)
+{
+	int i;
+
+	i = 3;
+	params->map.height = 0;
+	params->map.width = 0;
+	params->n_path = NULL;
+	params->w_path = NULL;
+	params->s_path = NULL;
+	params->n_path = NULL;
+	while (i-- > 0)
+	{
+		params->floor[i] = -1;
+		params->ceiling[i] = -1;
+	}
+}
+
 
 void cleaks()
 {
@@ -19,14 +38,13 @@ void cleaks()
 
 void	exit_error(char *str)
 {
-	printf("Error: %s\n", str);
+	printf("Error\n%s", str);
 	exit(1);
 }
 
 int main(int argc, char **argv)
 {
-	//char        *relative_path = "../img/img.xpm";
-	t_map       map;
+	//char        *relative_path = "../img/img.xpm";∂
 	t_params    params;
 
 // atexit(cleaks);
@@ -34,7 +52,8 @@ int main(int argc, char **argv)
 		exit_error("Lo archivo no valido");
 	if (ft_strlen(ft_strnstr(argv[1], ".cub", ft_strlen(argv[1]))) > 4)
 		exit_error("Lo archivo no valido");
-	parse_map(argv[1], &map, &params);
+	init_params(&params);
+	parse_map(argv[1], &params);
 	// params = (t_params *)malloc(sizeof(t_params));
 	// map = (t_map *)malloc(sizeof(t_map));
 	//parse_map(argv[1], map, params);

@@ -6,7 +6,7 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 20:18:02 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/10/16 18:49:43 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/10/19 23:46:28 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ char				*ft_strcpy(char *dest, char *src);
 int					base(int b, unsigned long long int num);
 char				*ft_newstr(size_t size);
 int					get_next_line(int fd, char **line);
+void				*ft_memalloc(size_t size);
 int					itoh(unsigned long long int num, int aux, int caps);
 
 #endif
