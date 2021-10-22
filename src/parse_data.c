@@ -6,7 +6,7 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 15:56:00 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/10/21 02:43:12 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/10/22 13:35:04 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	parse_data(char *file, t_params *params)
 	fd = open(file, O_RDONLY);
 	get_map_values(skip_lines, fd, params);
 	close(fd);
-	check_map(params);
+	check_map(params->map);
 }
 
 int	parse_info(t_params *params, int fd)
@@ -110,4 +110,35 @@ int parse_info_errors(t_params *params, int skip_lines)
 		return (0);
 	close(fd);
 	return (skip_lines);
+}
+
+void	get_map_size(int fd, t_params *params)
+{
+	char	*c;
+	int		width;
+
+	c = "01 NSWE";
+	while (params->line[0] != '\0')
+	{
+		width = 0;
+		while (params->line[width] && params->line[0] != '\0')
+		{
+			if (ft_strchr(c, params->line[width]))
+				width++;
+			else
+				exit_error("Character Invalid");
+			if (width > params->map.width)
+				params->map.width = width;
+		}
+		params->map.height++;
+		free(params->line);
+		get_next_line(fd, &params->line);
+	}
+	while (params->line[0] == '\0' && get_next_line(fd, &params->line) != 0)
+	{
+		if (params->line[0] != '\0')
+			exit_error("Character Invalid");
+		free(params->line);
+	}
+	free(params->line);
 }

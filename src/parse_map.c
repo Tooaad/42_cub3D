@@ -6,42 +6,11 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 02:40:56 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/10/21 02:46:01 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/10/22 14:32:42 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3D.h"
-
-void	get_map_size(int fd, t_params *params)
-{
-	char	*c;
-	int		width;
-
-	c = "01 NSWE";
-	while (params->line[0] != '\0')
-	{
-		width = 0;
-		while (params->line[width] && params->line[0] != '\0')
-		{
-			if(ft_strchr(c, params->line[width]))
-				width++;
-			else
-				exit_error("Character Invalid");
-			if (width > params->map.width)
-				params->map.width = width;
-		}
-		params->map.height++;
-		free(params->line);
-		get_next_line(fd, &params->line);
-	}
-	while (params->line[0] == '\0' && get_next_line(fd, &params->line) != 0)
-	{
-		if (params->line[0] != '\0')
-			exit_error("Character Invalid");
-		free(params->line);
-	}
-	free(params->line);
-}
 
 void	get_map_values(int skip_lines, int fd, t_params *params)
 {
@@ -59,31 +28,94 @@ void	get_map_values(int skip_lines, int fd, t_params *params)
 		get_row_values(i, skip_lines, fd, params);
 		i++;
 	}
-	exit(1);
 }
 
 void	get_row_values(int i, int skip_lines, int fd, t_params *params)
 {
 	size_t		j;
 
-	while (skip_lines-- > 0)
-		get_next_line(fd, &params->line);
-	while (get_next_line(fd, &params->line) != 0 || params->line[0] != '\0')
+	while (i == 0 && skip_lines-- > 0 && get_next_line(fd, &params->line))
+		free(params->line);
+	if (get_next_line(fd, &params->line) != 0  != '\0')
 	{
-		j = -1;	
+		j = -1;
 		while (++j < ft_strlen(params->line))
 		{
 			if (params->line[j])
 				params->map.grid[i][j] = params->line[j];
-			free(params->line);		
 		}
-		printf("%zu\n", ft_strlen(params->map.grid[i]));
 		free(params->line);
 	}
 }
 
-void	check_map(t_params *params)
+void	check_map(t_map map)
 {
-	// Recorrer todas las filas en busca de 0
-	// Mirar que alrededor de los 0 solo haya 0s o 1s
+	int	i;
+	int	j;
+	
+	i = 0;
+	j = 0;
+	while (!ft_strchr("NSEW", map.grid[i][j]))
+		if (++j >= (int)ft_strlen(map.grid[i]) && ++i)
+			j = 0;
+	if (i == 0 || i == map.height - 1) // || j == 0
+		exit_error("Como se te ocurra probar otro mapa invalido...\n");
+	surrounded("01", i - 1, j, map);
+	j++;
+	while (i != map.height && !ft_strchr("NSEW", map.grid[i][j]))
+		if (++j >= (int)ft_strlen(map.grid[i]) && ++i)
+			j = 0;
+	if(i != map.height && ft_strchr("NSEW", map.grid[i][j]))
+		exit_error("Que no vuelvas a probar un mapa invalido\n");
+	check_zeros(map);
+}
+
+	// printf("%d  --  %d,   %c\n", i ,j, map.grid[i][j]);
+void	check_zeros(t_map map)
+{
+	int	i;
+	int	j;
+	
+	j = 0;
+	i = 0;
+	while (i < map.height - 1)
+	{
+		while (!ft_strchr("0", map.grid[i][j]))
+		{
+			if (i == map.height - 1 && j == (int)ft_strlen(map.grid[i]) - 1)
+				return ;
+			if (++j >= (int)ft_strlen(map.grid[i]) && ++i)
+				j = 0;
+		}
+		if (i == 0 || i == map.height - 1) // || j == 0
+			exit_error("Como se te ocurra probar otro mapa invalido...\n");
+		if(ft_strchr("0", map.grid[i][j]))
+			surrounded("01NSEW", i - 1, j, map);
+		j++;
+	}
+	exit(1);
+}
+
+void	surrounded(char *c, size_t i, size_t j, t_map map)
+{
+	size_t	movs;
+
+	movs = 3;
+	while (movs-- > 0)
+	{
+		if (ft_strchr(c, map.grid[i][j - 1])
+			&& ft_strchr(c, map.grid[i][j + 1]))
+		{
+			if((movs == 1 && ft_strchr("01NSEW", map.grid[i][j]))
+				|| ft_strchr(c, map.grid[i][j])){
+				i++;
+			
+			}
+			else
+				exit_error("Te la estas buscando...\n");
+		}
+		else
+			exit_error("Como se te ocurra probar otro mapa invalido...\n");
+	}
+
 }

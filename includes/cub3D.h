@@ -6,7 +6,7 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 20:39:59 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/10/21 02:42:21 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/10/22 13:47:09 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,10 @@ void	parse_data(char *file, t_params *params);
 int		parse_info(t_params *params, int fd);
 char	*get_data(char *line, int d);
 int		parse_info_errors(t_params *params, int skip_lines);
-//
 void	get_map_size(int fd, t_params *params);
+//
 void	get_map_values(int skip_lines, int fd, t_params *params);
 void	get_row_values(int i, int skip_lines, int fd, t_params *params);
-void	check_map(t_params *params);
+void	check_map(t_map map);
+void	check_zeros(t_map map);
+void	surrounded(char *c, size_t i, size_t j, t_map map);
