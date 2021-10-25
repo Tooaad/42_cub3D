@@ -6,7 +6,7 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 02:40:56 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/10/22 14:32:42 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/10/25 13:43:31 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	get_map_values(int skip_lines, int fd, t_params *params)
 		params->map.grid[i] = (char *)ft_memalloc(sizeof(char) * params->map.width + 1);
 		if (!params->map.grid[i])
 			exit_error("malloc error");
+		ft_memset(params->map.grid[i], ' ', params->map.width);
 		get_row_values(i, skip_lines, fd, params);
 		i++;
 	}
@@ -32,17 +33,24 @@ void	get_map_values(int skip_lines, int fd, t_params *params)
 
 void	get_row_values(int i, int skip_lines, int fd, t_params *params)
 {
-	size_t		j;
+	int			j;
 
 	while (i == 0 && skip_lines-- > 0 && get_next_line(fd, &params->line))
 		free(params->line);
-	if (get_next_line(fd, &params->line) != 0  != '\0')
+	if (get_next_line(fd, &params->line) != 0 || params->line[0] != '\0')
 	{
 		j = -1;
-		while (++j < ft_strlen(params->line))
+		while (++j < (int)ft_strlen(params->line))
 		{
-			if (params->line[j])
-				params->map.grid[i][j] = params->line[j];
+			params->map.grid[i][j] = params->line[j];
+		    if (ft_strchr("NSEW", params->line[j]))
+			{
+				if (params->map.direction != '\0')
+					exit_error("Invalid map, multiple initial positions detected");
+				params->map.init_x = i;
+				params->map.init_y = j;
+				params->map.direction = params->line[j];
+			}
 		}
 		free(params->line);
 	}
@@ -58,19 +66,13 @@ void	check_map(t_map map)
 	while (!ft_strchr("NSEW", map.grid[i][j]))
 		if (++j >= (int)ft_strlen(map.grid[i]) && ++i)
 			j = 0;
-	if (i == 0 || i == map.height - 1) // || j == 0
-		exit_error("Como se te ocurra probar otro mapa invalido...\n");
+	if (i == 0 || i == map.height - 1 || j == (int)ft_strlen(map.grid[i]) - 1)
+		exit_error("Como se te ocurra probar otro mapa invalido... n\n");
 	surrounded("01", i - 1, j, map);
-	j++;
-	while (i != map.height && !ft_strchr("NSEW", map.grid[i][j]))
-		if (++j >= (int)ft_strlen(map.grid[i]) && ++i)
-			j = 0;
-	if(i != map.height && ft_strchr("NSEW", map.grid[i][j]))
-		exit_error("Que no vuelvas a probar un mapa invalido\n");
 	check_zeros(map);
 }
 
-	// printf("%d  --  %d,   %c\n", i ,j, map.grid[i][j]);
+// printf("%d  --  %d,   %c\n", i ,j, map.grid[i][j]);
 void	check_zeros(t_map map)
 {
 	int	i;
@@ -87,16 +89,16 @@ void	check_zeros(t_map map)
 			if (++j >= (int)ft_strlen(map.grid[i]) && ++i)
 				j = 0;
 		}
-		if (i == 0 || i == map.height - 1) // || j == 0
-			exit_error("Como se te ocurra probar otro mapa invalido...\n");
-		if(ft_strchr("0", map.grid[i][j]))
+		if (i == 0 || i == map.height - 1)
+			exit_error("Como se te ocurra probar otro mapa invalido... 0\n");
+
+		if(map.grid[i][j] == '0')
 			surrounded("01NSEW", i - 1, j, map);
 		j++;
 	}
-	exit(1);
 }
 
-void	surrounded(char *c, size_t i, size_t j, t_map map)
+void	surrounded(char *c, int i, int j, t_map map)
 {
 	size_t	movs;
 
@@ -109,7 +111,6 @@ void	surrounded(char *c, size_t i, size_t j, t_map map)
 			if((movs == 1 && ft_strchr("01NSEW", map.grid[i][j]))
 				|| ft_strchr(c, map.grid[i][j])){
 				i++;
-			
 			}
 			else
 				exit_error("Te la estas buscando...\n");
@@ -117,5 +118,4 @@ void	surrounded(char *c, size_t i, size_t j, t_map map)
 		else
 			exit_error("Como se te ocurra probar otro mapa invalido...\n");
 	}
-
 }

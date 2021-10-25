@@ -6,7 +6,7 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 19:46:35 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/10/21 11:51:04 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/10/25 13:54:47 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@ void init_params(t_params *params)
 	i = 3;
 	params->map.height = 0;
 	params->map.width = 0;
+	params->map.init_x = -1;
+	params->map.init_y = -1;
+	params->map.direction = '\0';
 	params->n_path = NULL;
 	params->w_path = NULL;
 	params->s_path = NULL;
@@ -44,7 +47,7 @@ void	exit_error(char *str)
 
 int main(int argc, char **argv)
 {
-	//char        *relative_path = "../img/img.xpm";∂
+	//char        *relative_path = "../img/img.xpm";
 	t_params    params;
 
 // atexit(cleaks);
@@ -54,10 +57,8 @@ int main(int argc, char **argv)
 		exit_error("Lo archivo no valido");
 	init_params(&params);
 	parse_data(argv[1], &params);
-	// params = (t_params *)malloc(sizeof(t_params));
-	// map = (t_map *)malloc(sizeof(t_map));
-	//parse_map(argv[1], map, params);
-	
+	build_mlx(&params);
+
 	return (0);
 
 }
