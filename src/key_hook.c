@@ -6,7 +6,7 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:15:25 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/10/23 19:05:07 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/10/28 01:21:03 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,36 @@ void	key_hook1(int keycode, t_params *params)
 		exit(1);
 	}
 	if (keycode == RIGHT)
-		params->camera.cam += 30;
+	{
+		params->camera.c_angle += 0.1;
+		if (params->camera.c_angle > 2 * PI)
+			params->camera.c_angle -= 2 * PI;
+		params->camera.dX = cos(params->camera.c_angle) * 5;
+		params->camera.dY = sin(params->camera.c_angle) * 5;
+	}
 	if (keycode == LEFT)
-		params->camera.cam -= 30;
-	// if (keycode == W)
+	{
+		params->camera.c_angle -= 0.1;
+		if (params->camera.c_angle < 0)
+			params->camera.c_angle += 2 * PI;
+		params->camera.dX = cos(params->camera.c_angle) * 5;
+		params->camera.dY = sin(params->camera.c_angle) * 5;
+	}
 
+	if (keycode == W)
+	{
+		params->player.posX += params->camera.dX;
+		params->player.posY -= params->camera.dY;
+	}
 	// if (keycode == A)
-	
-	// if (keycode == S)
-	
+
+	if (keycode == S)
+	{
+		params->player.posX += params->camera.dX;
+		params->player.posY -= params->camera.dY;	
+	}
 	// if (keycode == D)
+
 }
 
 // void	key_hook2(int keycode, t_params *params)

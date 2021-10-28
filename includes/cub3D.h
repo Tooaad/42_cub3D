@@ -6,7 +6,7 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 20:39:59 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/10/25 11:20:35 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/10/28 11:28:33 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <fcntl.h>
+# include <math.h>
 # include <mlx.h>
 # define WIDTH	1960
 # define HEIGHT	1080
@@ -28,11 +29,26 @@
 # define S		1
 # define D		2
 
+# define PI		3.1459265
+
 typedef struct s_camera
 {
-	int				cam;
-	int				walk;
+	double			dX;
+	double			dY;
+	double			c_angle;
 }				t_camera;
+
+typedef struct s_player
+{
+	double			posX;		// Start
+	double			posY;
+	double			dirX;		// init direction 
+	double			dirY;
+	double			planeX;		// FOV
+	double			planeY;
+	double			time; 
+	double			oldtime;
+}				t_player;
 
 typedef struct s_map
 {
@@ -40,13 +56,12 @@ typedef struct s_map
 	char			direction;
 	int				width;
 	int				height;
-	int				init_x;
-	int				init_y;
 }					t_map;
 
 typedef struct s_params
 {
 	t_camera		camera;
+	t_player		player;
 	t_map			map;
 	char			*line;
 	void			*win;

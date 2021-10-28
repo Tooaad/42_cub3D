@@ -6,7 +6,7 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/22 18:12:58 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/10/25 13:53:40 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/10/26 16:55:20 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int close_win(t_params *params)
 {
-	exit(1);
+
 	mlx_destroy_window(params->mlx, params->win);
-	return 1;
+	exit(0);
 }
 
 int	refresh_image(t_params *params)
@@ -36,10 +36,10 @@ int	build_mlx(t_params *params)
 	params->img = mlx_new_image(params->mlx, WIDTH, HEIGHT);
 	params->img_adr = mlx_get_data_addr(params->img, &(params->bits_per_pixel),
 			&(params->size_line), &(params->endian));
-	mlx_loop(params->mlx);
-	mlx_hook(params->win, 2, 1L<<17, close_win, &params);
-	mlx_destroy_window(params->mlx, params->win);
 	refresh_image(params);
 	mlx_hook(params->win, 2, 2, key_hook, params);
+	mlx_hook(params->win, 17, 1L<<17, close_win, &params);
+	mlx_destroy_window(params->mlx, params->win);
+	mlx_loop(params->mlx);
 	return (0);
 }
