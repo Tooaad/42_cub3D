@@ -6,7 +6,7 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 20:39:59 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/10/28 11:28:33 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/10/29 16:32:45 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,3 +103,11 @@ void	key_hook1(int keycode, t_params *params);
 void	key_hook2(int keycode, t_params *params);
 void	key_hook3(int keycode, t_params *params);
 void	key_hook4(int keycode, t_params *params);
+
+//
+void	paint_background(t_params *params, int colour);
+void	put_pixel(t_params *params, int x, int y, int color);
+void	draw_player(t_params *params);
+void	paint_square(t_params *params, int x, int y, int colour);
+void	draw_grid(t_params *params);
+void	draw_map(t_params *params);

@@ -6,7 +6,7 @@
 #    By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/05 18:36:42 by gpernas-          #+#    #+#              #
-#    Updated: 2021/10/23 19:09:10 by gpernas-         ###   ########.fr        #
+#    Updated: 2021/10/29 16:38:50 by gpernas-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,10 @@ C_CUB        =  	cub3D.c 		\
 					parse_map.c		\
 					parse_data.c	\
 					key_hook.c		\
-					manage_window.c
+					manage_window.c	\
+					minimap.c		\
+					draw.c			\
+					coords.c		
 
 SRCSFD          =    src/
 OBJSFD          =    objs/

@@ -6,7 +6,7 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 19:46:35 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/10/25 13:54:47 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/10/29 16:35:21 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ void init_params(t_params *params)
 	int i;
 
 	i = 3;
+	params->player.posX = -1;
+	params->player.posY = -1;
 	params->map.height = 0;
 	params->map.width = 0;
-	params->map.init_x = -1;
-	params->map.init_y = -1;
 	params->map.direction = '\0';
 	params->n_path = NULL;
 	params->w_path = NULL;
