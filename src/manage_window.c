@@ -6,7 +6,7 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/22 18:12:58 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/10/29 16:37:09 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/01 12:31:55 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,11 @@ int	refresh_image(t_params *params)
 
 int	build_mlx(t_params *params)
 {
-	params->player.posX = 300;
-	params->player.posY = 300;
+	params->player.posX *= params->map.prop + params->map.prop / 8;
+	params->player.posY *= params->map.prop + params->map.prop / 8;
+	params->player.dposX = cos(params->player.angle) * 5;
+	params->player.dposY = sin(params->player.angle) * 5;
+	
 
 	params->mlx = mlx_init();
 	params->win = mlx_new_window(params->mlx, WIDTH, HEIGHT, "cub3D");

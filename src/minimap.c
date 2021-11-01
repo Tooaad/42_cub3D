@@ -6,11 +6,20 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/29 16:25:51 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/10/29 17:04:41 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/01 13:03:53 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3D.h"
+
+void	put_pixel(t_params *params, int x, int y, int color)
+{
+	char	*dst;
+
+	dst = params->img_adr + (y * params->size_line + x
+		* (params->bits_per_pixel / 8));
+	*(unsigned int*)dst = color;
+}
 
 void	paint_background(t_params *params, int colour)
 {
@@ -28,13 +37,6 @@ void	paint_background(t_params *params, int colour)
 	}
 }
 
-void	put_pixel(t_params *params, int x, int y, int color)
-{
-	char	*dst;
-
-	dst = params->img_adr + (y * params->size_line + x * (params->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
-}
 
 void	draw_player(t_params *params)
 {
@@ -48,7 +50,7 @@ void	draw_player(t_params *params)
 		while (y++ < params->player.posY + 4)
 		{
 			if (x + 4 < WIDTH && x - 4 > 0 && y + 4 < HEIGHT && y - 4 > 0)
-				put_pixel(params, x, y, 0x1600FF);
+				put_pixel(params, y, x, 0x1600FF);
 		}
 	}
 }
@@ -58,11 +60,11 @@ void	paint_square(t_params *params, int x, int y, int colour)
 	int	xo;
 	int	yo;
 
-	yo = y * (HEIGHT / params->map.width) + 1;
-	while (yo++ < (y * (HEIGHT / params->map.width) + (HEIGHT / params->map.width) - 1))
+	yo = y * params->map.prop + 1;
+	while (yo++ < y * params->map.prop + (params->map.prop - 1))
 	{
-		xo = x * (HEIGHT / params->map.width) + 1;
-		while (xo++ < (x * (HEIGHT / params->map.width) + (HEIGHT / params->map.width) - 1))
+		xo = x * params->map.prop + 1;
+		while (xo++ < x * params->map.prop + (params->map.prop - 1))
 		{
 			put_pixel(params, xo, yo, colour);
 		}
@@ -83,14 +85,41 @@ void	draw_grid(t_params *params)
 		while (++x < params->map.width)
 		{
 			if (params->map.grid[y][x] == '1')
-				colour = 0x000000;
+				colour = 0xFFFFFF;	
 			else
-				colour = 0xFFFFFF;
-			printf("painting %d, %d with %c\n", x, y, params->map.grid[y][x]);
+				colour = 0x000000;
 			if (colour != -1)
 				paint_square(params, x, y, colour);
 		}
 	}
+}
+
+void	draw_ray(t_params *params)
+{
+	int	x;
+	int	y;
+	int	colour;
+
+	y = params->player.posY;
+	colour = 0x008F39;
+	// while (++y < params->ray.Y)
+	// {
+		x = params->player.posX;
+	// 	while (++x < params->ray.Y)
+	// 	{
+			// put_pixel(params, x, y, colour);
+			// put_pixel(params, x+1, y, colour);
+			// put_pixel(params, x, y+1, colour);
+			// put_pixel(params, x-1, y, colour);
+			// put_pixel(params, x, y-1, colour);
+			// put_pixel(params, x+2, y, colour);
+			// put_pixel(params, x, y+2, colour);
+			// put_pixel(params, x-2, y, colour);
+			// put_pixel(params, x, y-2, colour);
+			// put_pixel(params, x+1, y+1, colour);
+	// 	}
+	// }
+
 }
 
 void	draw_map(t_params *params)
@@ -98,4 +127,6 @@ void	draw_map(t_params *params)
 	paint_background(params, 0x9B9B9B);
 	draw_grid(params);
 	draw_player(params);
+	trace_ray(params);
+	// draw_ray(params);
 }

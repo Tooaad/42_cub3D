@@ -6,7 +6,7 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 20:39:59 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/10/29 16:32:45 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/01 14:00:48 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,21 +29,30 @@
 # define S		1
 # define D		2
 
-# define PI		3.1459265
+# define PI		3.14159265
 
-typedef struct s_camera
+typedef struct	s_ray
 {
-	double			dX;
-	double			dY;
-	double			c_angle;
-}				t_camera;
+	double			X;
+	double			Y;
+	double			angle;
+	double			aView; //tangente // aTan (Centro de la mirada)
+	double			offsetX;
+	double			offsetY;
+
+}				t_ray;
 
 typedef struct s_player
 {
-	double			posX;		// Start
+	double			posX;		// Start Position
 	double			posY;
+	double			angle;		// Player angle	
+	double			dposX;		// Start Rotation
+	double			dposY;
+
 	double			dirX;		// init direction 
 	double			dirY;
+
 	double			planeX;		// FOV
 	double			planeY;
 	double			time; 
@@ -56,12 +65,13 @@ typedef struct s_map
 	char			direction;
 	int				width;
 	int				height;
+	int				prop;
 }					t_map;
 
 typedef struct s_params
 {
-	t_camera		camera;
 	t_player		player;
+	t_ray			ray;
 	t_map			map;
 	char			*line;
 	void			*win;
@@ -110,4 +120,9 @@ void	put_pixel(t_params *params, int x, int y, int color);
 void	draw_player(t_params *params);
 void	paint_square(t_params *params, int x, int y, int colour);
 void	draw_grid(t_params *params);
+void	draw_ray(t_params *params);
 void	draw_map(t_params *params);
+
+//
+void	trace_ray(t_params *params);
+void	join_pixels(t_params *params, int x2, int y2, int x1, int y1);

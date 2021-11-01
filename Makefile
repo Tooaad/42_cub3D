@@ -6,7 +6,7 @@
 #    By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/05 18:36:42 by gpernas-          #+#    #+#              #
-#    Updated: 2021/10/29 16:38:50 by gpernas-         ###   ########.fr        #
+#    Updated: 2021/11/01 14:01:23 by gpernas-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ C_CUB        =  	cub3D.c 		\
 					key_hook.c		\
 					manage_window.c	\
 					minimap.c		\
-					draw.c			\
+					create_rays.c	\
 					coords.c		
 
 SRCSFD          =    src/
@@ -33,7 +33,7 @@ OBJS_CUB     =    $(addprefix $(OBJSFD), $(C_CUB:.c=.o))
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # Compilation
-CFLAGS			=    -Wall -Wextra -Werror #-fsanitize=address # FOR LEAKS
+CFLAGS			=    -Wall -Wextra -Werror -fsanitize=address # FOR LEAKS
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # Colors

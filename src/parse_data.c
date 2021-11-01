@@ -6,7 +6,7 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 15:56:00 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/10/22 13:35:04 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/01 12:17:03 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,10 @@ void	parse_data(char *file, t_params *params)
 	fd = open(file, O_RDONLY);
 	get_map_values(skip_lines, fd, params);
 	close(fd);
+	if (params->map.height > params->map.width)
+		params->map.prop = HEIGHT / params->map.height;
+	else
+		params->map.prop = HEIGHT / params->map.width;
 	check_map(params->map);
 }
 

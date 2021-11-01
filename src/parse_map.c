@@ -6,7 +6,7 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 02:40:56 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/10/27 12:43:10 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/01 16:42:29 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ void	get_row_values(int i, int skip_lines, int fd, t_params *params)
 			{
 				if (params->map.direction != '\0')
 					exit_error("Invalid map, multiple initial positions detected");
-				params->player.posX = i;
-				params->player.posY = j;
+				params->player.posX = j;
+				params->player.posY = i;
 				params->map.direction = params->line[j];
 			}
 		}
