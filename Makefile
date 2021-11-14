@@ -6,7 +6,7 @@
 #    By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/05 18:36:42 by gpernas-          #+#    #+#              #
-#    Updated: 2021/11/01 14:01:23 by gpernas-         ###   ########.fr        #
+#    Updated: 2021/11/13 11:52:00 by gpernas-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ C_CUB        =  	cub3D.c 		\
 					manage_window.c	\
 					minimap.c		\
 					create_rays.c	\
-					coords.c		
+					3D_persp.c
 
 SRCSFD          =    src/
 OBJSFD          =    objs/
@@ -61,7 +61,7 @@ $(OBJSFD):
 	@mkdir $@
 	@echo "\t[ $(GREEN)✔$(NONE) ] $@ directory"
 
-$(NAME): $(OBJSFD) $(OBJS_CUB) $(OBJS_CLIENT)
+$(NAME): $(OBJSFD) $(OBJS_CUB)
 	@gcc $(CFLAGS) $(OBJS_CUB) -lmlx -framework OpenGL -framework AppKit libft/libft.a -o $@
 	@echo "\t[ $(GREEN)✔$(NONE) ] cub3D executable"
 
@@ -86,3 +86,4 @@ fclean: clean
 re: fclean all
 
 .PHONY: project all clean fclean re
+

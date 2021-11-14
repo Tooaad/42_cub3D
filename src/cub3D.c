@@ -6,7 +6,7 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 19:46:35 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/11/01 16:34:29 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/13 12:14:11 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ void init_params(t_params *params)
 	int i;
 
 	i = 3;
-	params->player.posX = -1;
 	params->player.posY = -1;
-	params->player.angle = PI / 2;
+	params->player.posX = -1;
+	params->player.angle = 0;
 	params->map.height = 0;
 	params->map.width = 0;
 	params->map.direction = '\0';
@@ -32,6 +32,24 @@ void init_params(t_params *params)
 		params->floor[i] = -1;
 		params->ceiling[i] = -1;
 	}
+}
+
+void	textures_load(t_params *params)
+{
+	int		width;
+	int		height;
+
+	params->map.texture_no = mlx_xpm_file_to_image(params->mlx,
+			params->n_path, &width, &height);
+	
+	params->map.texture_so = mlx_xpm_file_to_image(params->mlx,
+			params->s_path, &width, &height);
+	
+	params->map.texture_we = mlx_xpm_file_to_image(params->mlx,
+			params->w_path, &width, &height);
+
+	params->map.texture_ea = mlx_xpm_file_to_image(params->mlx,
+			params->e_path, &width, &height);
 }
 
 
@@ -48,7 +66,7 @@ void	exit_error(char *str)
 
 int main(int argc, char **argv)
 {
-	//char        *relative_path = "../img/img.xpm";
+	// char        *relative_path = "../img/img.xpm";
 	t_params    params;
 
 // atexit(cleaks);

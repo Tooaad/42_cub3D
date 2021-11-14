@@ -6,7 +6,7 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 15:56:00 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/11/01 12:17:03 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/10 17:40:23 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,10 @@ int	parse_info(t_params *params, int fd)
 		else
 			break;
 		i++;
+		printf("%s\n", params->line);
 		free(params->line);
 	}
+	printf("%d\n", i);
 	return (parse_info_errors(params, i));
 }
 
@@ -94,22 +96,22 @@ int parse_info_errors(t_params *params, int skip_lines)
 	int fd;
 
 	if (params->n_path == NULL || params->w_path == NULL
-		|| params->s_path == NULL || params->n_path == NULL
+		|| params->s_path == NULL || params->e_path == NULL
 		|| params->floor[0] == -1 || params->ceiling[0] == -1)
 		return (0);
 	fd = open(params->n_path, O_RDONLY);
 	if (fd == -1)
 		return (0);
 	close(fd);
-	fd = open(params->n_path, O_RDONLY);
+	fd = open(params->w_path, O_RDONLY);
 	if (fd == -1)
 		return (0);
 	close(fd);
-	fd = open(params->n_path, O_RDONLY);
+	fd = open(params->s_path, O_RDONLY);
 	if (fd == -1)
 		return (0);
 	close(fd);
-	fd = open(params->n_path, O_RDONLY);
+	fd = open(params->e_path, O_RDONLY);
 	if (fd == -1)
 		return (0);
 	close(fd);

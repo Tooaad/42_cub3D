@@ -6,7 +6,7 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:15:25 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/11/01 16:41:21 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/08 13:07:15 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@ void	key_hook1(int keycode, t_params *params)
 		// anti_leaks(params);
 		exit(1);
 	}
+	if (keycode == DEL)
+		init_player(params);
+	
 	if (keycode == LEFT)
 	{
 		params->player.angle += 0.1;
@@ -49,26 +52,26 @@ void	key_hook1(int keycode, t_params *params)
 
 void	key_hook2(int keycode, t_params *params)
 {
-	if (keycode == W && params->player.posY - params->player.dposY > 0)
+	if (keycode == W)
 	{
-		params->player.posX -= params->player.dposX;
 		params->player.posY -= params->player.dposY;
-	}
-	if (keycode == S && params->player.posY + params->player.dposY < HEIGHT)
-	{
 		params->player.posX += params->player.dposX;
-		params->player.posY += params->player.dposY;
 	}
-	// if (keycode == A && params->player.posX - params->player.dposX > 0)
-	// {
-	// 	params->player.posX -= params->player.dposX;
-	// 	// params->player.posY -= params->player.dposX;
-	// }
-	// if (keycode == D && params->player.posX + params->player.dposX < WIDTH)
-	// {
-	// 	params->player.posX += params->player.dposX;
-	// 	// params->player.posY += params->player.dposX;
-	// }
+	if (keycode == S)
+	{
+		params->player.posY += params->player.dposY;
+		params->player.posX -= params->player.dposX;
+	}
+	if (keycode == A)
+	{
+		params->player.posY -= params->player.dposX;
+		params->player.posX -= params->player.dposY;
+	}
+	if (keycode == D)
+	{
+		params->player.posY += params->player.dposX;
+		params->player.posX += params->player.dposY;
+	}
 }
 
 // void	key_hook3(int keycode, t_params *params)
