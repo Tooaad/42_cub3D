@@ -6,7 +6,7 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 11:35:06 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/11/14 20:15:59 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/16 20:21:28 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void	calculate_ray_vertical(t_params *params, t_ray *ray, double rays)
 
 void	trace_ray(t_params *params)
 {
-	int		r;
+	double		r;
 	double	disT;
 	double	rays;
 	t_ray	ray_h, ray_v, ray_t;
@@ -137,31 +137,27 @@ void	trace_ray(t_params *params)
 		disV = dist(params->player.posX, params->player.posY, ray_v.X, ray_v.Y);
 
 
-		// t_texture texture;
+
 		if (disV < disH)
 		{
 			ray_t = ray_v;
 			disT = disV;
 			if (rays > PI / 2 && rays < 3 * PI / 2)
-				persp(params, rays, r, disT, params->map.texture_ea);
-				// texture = params->map.texture_ea;
+				persp(params, rays, r, disT, params->map.texture_ea, ray_t);
 			else
-				persp(params, rays, r, disT, params->map.texture_we);
-				// texture = params->map.texture_we;
+				persp(params, rays, r, disT, params->map.texture_we, ray_t);
 		}
 		else if (disH < disV)
 		{
 			ray_t = ray_h;
 			disT = disH;
 			if (rays > PI)
-				persp(params, rays, r, disT, params->map.texture_so);
-				// texture = params->map.texture_so;
+				persp(params, rays, r, disT, params->map.texture_so, ray_t);
 			else
-				persp(params, rays, r, disT, params->map.texture_no);
-				// texture = params->map.texture_no;
+				persp(params, rays, r, disT, params->map.texture_no, ray_t);
 		}
 		// join_pixels(params, params->player.posX, params->player.posY, ray_t.X, ray_t.Y, 0x4000FF); // rayos
-		// persp(params, rays, r, disT, &texture);
+		// persp(params, rays, r, disT, texture);
 
 
 
@@ -173,7 +169,6 @@ void	trace_ray(t_params *params)
 			rays += 2 * PI;
 		if (rays > 2 * PI)
 			rays -= 2 * PI;
-	
 		
 	}
 }
@@ -202,44 +197,6 @@ void join_pixels(t_params *params, int x0, int y0, int x1, int y1, int colour)
     {
         if (y0 < HEIGHT && x0 < WIDTH && y0 > 0 && x0 > 0)
             put_pixel(params, x0, y0, colour);
-        e2 = err;
-        if (e2 > -dx)
-        {
-            err -= dy;
-            x0 += sx;
-        }
-        if (e2 < dy)
-        {
-            err += dx;
-            y0 += sy;
-        }
-    }
-}
-
-void join_pixels_texture(t_params *params, int x0, int y0, int x1, int y1, t_texture *texture)
-{
-    int    dx;
-    int    dy;
-    int    err;
-    int    e2;
-    int    sx;
-    int    sy;
-    
-    dx = abs(x1 - x0);
-    dy = abs(y1 - y0);
-    sx = -1;
-    if (x0 < x1)
-        sx = 1;
-    sy = -1;
-    if (y0 < y1)
-        sy = 1;
-    err = -dy / 2;
-    if (dx > dy)
-        err = dx / 2;
-    while (x0 != x1 || y0 != y1)
-    {
-        if (y0 < HEIGHT && x0 < WIDTH && y0 > 0 && x0 > 0)
-            put_pixel(params, x0, y0, get_tex_colour(texture, x1, y1));
         e2 = err;
         if (e2 > -dx)
         {
