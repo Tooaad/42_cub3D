@@ -6,42 +6,42 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/22 18:12:58 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/11/16 17:28:10 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/17 22:03:37 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3D.h"
 
-void    draw_texture(t_params *params)
-{
-    int x;
-    int y;
-    char *colour;
+// void    draw_texture(t_params *params)
+// {
+//     int x;
+//     int y;
+//     char *colour;
 
-    t_texture    *tex = params->map.texture_no;
+//     t_texture    *tex = params->map.texture_no;
 
-    y = -1;
-	// tex->height = 64;
-	// tex->width = 64;
-    while (++y < tex->height)
-    {
-        x = -1;
-        while (++x < tex->width)
-        {
-            colour = tex->img_adr + (y * tex->width * 4 + x * 4);
+//     y = -1;
+// 	// tex->height = 64;
+// 	// tex->width = 64;
+//     while (++y < tex->height)
+//     {
+//         x = -1;
+//         while (++x < tex->width)
+//         {
+//             colour = tex->img_adr + (y * tex->width * 4 + x * 4);
 
-            int x1, y1;
+//             int x1, y1;
             
-            y1 = y * 4 - 1;
-            while (++y1 < y * 4 + 4)
-            {
-                x1 = x * 4 - 1;
-                while (++x1 < x * 4 + 4)
-                    put_pixel(params, x1, y1, *colour);
-            }
-        }
-    }
-}
+//             y1 = y * 4 - 1;
+//             while (++y1 < y * 4 + 4)
+//             {
+//                 x1 = x * 4 - 1;
+//                 while (++x1 < x * 4 + 4)
+//                     put_pixel(params, x1, y1, *colour);
+//             }
+//         }
+//     }
+// }
 
 int close_win(t_params *params)
 {
@@ -53,7 +53,7 @@ int close_win(t_params *params)
 int	refresh_image(t_params *params)
 {
 	draw_map(params);
-	draw_texture(params);
+	// draw_texture(params);
 	mlx_put_image_to_window(params->mlx, params->win, params->img, 0, 0);
 	mlx_destroy_image(params->mlx, params->img);
 	params->img = mlx_new_image(params->mlx, WIDTH, HEIGHT);

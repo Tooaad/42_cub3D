@@ -6,13 +6,13 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 11:35:06 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/11/16 20:21:28 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/18 12:53:56 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3D.h"
 
-void	calculate_ray_horizontal(t_params *params, t_ray *ray, double rays)
+void	calculate_ray_horizontal(t_params *params, t_ray *ray, float rays)
 {
 	int		dof;
 	double	aTan;
@@ -24,25 +24,26 @@ void	calculate_ray_horizontal(t_params *params, t_ray *ray, double rays)
 	// --- Check Horizontal Lines ---
 	// ------------------------------
 	
-	if (rays > PI) // looking down OK
+	if (sin(degToRad(rays)) > 0.001) // looking down OK
 	{
 		ray->Y = roundUp(params->player.posY, params->map.prop);
 		ray->X = (params->player.posY - ray->Y) * aTan + params->player.posX;
 		ray->offsetY = params->map.prop;
 		ray->offsetX = -ray->offsetY * aTan;
 	}
-	if (rays < PI) // looking up OK
+	else if (sin(degToRad(rays)) < -0.001) // looking up OK
 	{
 		ray->Y = roundDown(params->player.posY, params->map.prop) - 0.0001;
 		ray->X = (params->player.posY - ray->Y) * aTan + params->player.posX;
 		ray->offsetY = -params->map.prop;
 		ray->offsetX = -ray->offsetY * aTan;
 	}
-	
-	if (rays == 0 || rays == PI)
+	else
 	{
+		printf("%f\n", rays);
 		ray->X = params->player.posX;
 		ray->Y = params->player.posY;
+		// dof = params->map.height;
 	}
 	
 	while (dof < params->map.height)
@@ -61,7 +62,7 @@ void	calculate_ray_horizontal(t_params *params, t_ray *ray, double rays)
 	}
 }
 
-void	calculate_ray_vertical(t_params *params, t_ray *ray, double rays)
+void	calculate_ray_vertical(t_params *params, t_ray *ray, float rays)
 {
 	int		dof;
 	double	nTan;
@@ -73,25 +74,26 @@ void	calculate_ray_vertical(t_params *params, t_ray *ray, double rays)
 	// --- Check Vertical Lines -----
 	// ------------------------------
 	
-	if (rays > PI / 2 && rays < 3 * PI / 2)
+	if (sin(degToRad(rays)) > 0.001)
 	{
 		ray->X = roundDown(params->player.posX, params->map.prop) - 0.0001;
 		ray->Y = (params->player.posX - ray->X) * nTan + params->player.posY;
 		ray->offsetX = -params->map.prop;
 		ray->offsetY = -ray->offsetX * nTan;
 	}
-	if (rays < PI / 2 || rays > 3 * PI / 2)
+	else if (sin(degToRad(rays)) < -0.001)
 	{
 		ray->X = roundUp(params->player.posX, params->map.prop);
 		ray->Y = (params->player.posX - ray->X) * nTan + params->player.posY;
 		ray->offsetX = params->map.prop;
 		ray->offsetY = -ray->offsetX * nTan;
 	}
-	
-	if (rays == PI / 2 || rays == 3 * PI / 2)
+	else
 	{
+		printf("%f\n", rays);
 		ray->X = params->player.posX;
 		ray->Y = params->player.posY;
+		dof = params->map.height;
 	}
 	
 	while (dof < params->map.width)
@@ -113,19 +115,19 @@ void	calculate_ray_vertical(t_params *params, t_ray *ray, double rays)
 
 void	trace_ray(t_params *params)
 {
-	double		r;
+	double	r;
 	double	disT;
-	double	rays;
+	float	rays;
 	t_ray	ray_h, ray_v, ray_t;
 
-	rays = params->player.angle - RD * 30;
+	rays = params->player.angle - (RD * 60 / WIDTH) * (WIDTH / 2);
 	if (rays < 0)
 		rays += 2 * PI;
 	if (rays > 2 * PI)
 		rays -= 2 * PI;
 	
 	r = -1;
-	while (++r < 60)
+	while (++r < RAYS)
 	{
 		calculate_ray_horizontal(params, &ray_h, rays);
 		calculate_ray_vertical(params, &ray_v, rays);
@@ -135,11 +137,11 @@ void	trace_ray(t_params *params)
 
 		double	disV = 10000000;
 		disV = dist(params->player.posX, params->player.posY, ray_v.X, ray_v.Y);
-
-
+	
 
 		if (disV < disH)
 		{
+			params->vertical = 1;
 			ray_t = ray_v;
 			disT = disV;
 			if (rays > PI / 2 && rays < 3 * PI / 2)
@@ -151,6 +153,7 @@ void	trace_ray(t_params *params)
 		{
 			ray_t = ray_h;
 			disT = disH;
+			params->vertical = 0;
 			if (rays > PI)
 				persp(params, rays, r, disT, params->map.texture_so, ray_t);
 			else
@@ -159,12 +162,7 @@ void	trace_ray(t_params *params)
 		// join_pixels(params, params->player.posX, params->player.posY, ray_t.X, ray_t.Y, 0x4000FF); // rayos
 		// persp(params, rays, r, disT, texture);
 
-
-
-
-
-
-		rays += RD;
+		rays += (RD * 60 / WIDTH);
 		if (rays < 0)
 			rays += 2 * PI;
 		if (rays > 2 * PI)
@@ -235,7 +233,20 @@ int roundDown(int numToRound, int multiple)
 	return numToRound - remainder;
 }
 
-float dist(double ax, double ay, double bx, double by)
+double dist(double ax, double ay, double bx, double by)
 {
 	return (sqrt((bx - ax) * (bx - ax) + (by - ay) * (by - ay)));
+}
+
+float degToRad(int a)
+{
+	return a * PI / 180.0;
+}
+float FixAng(int a)
+{
+	if (a > 359)
+		a -= 360;
+	if (a < 0)
+		a += 360;
+	return a;
 }
