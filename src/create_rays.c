@@ -6,7 +6,7 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 11:35:06 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/11/18 12:53:56 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/19 23:29:12 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,33 +19,20 @@ void	calculate_ray_horizontal(t_params *params, t_ray *ray, float rays)
 
 	dof = 0;
 	aTan = 1 / tan(rays);
-	
-	// ------------------------------
-	// --- Check Horizontal Lines ---
-	// ------------------------------
-	
-	if (sin(degToRad(rays)) > 0.001) // looking down OK
+	if (rays > PI)
 	{
 		ray->Y = roundUp(params->player.posY, params->map.prop);
 		ray->X = (params->player.posY - ray->Y) * aTan + params->player.posX;
 		ray->offsetY = params->map.prop;
 		ray->offsetX = -ray->offsetY * aTan;
 	}
-	else if (sin(degToRad(rays)) < -0.001) // looking up OK
+	else if (rays < PI)
 	{
 		ray->Y = roundDown(params->player.posY, params->map.prop) - 0.0001;
 		ray->X = (params->player.posY - ray->Y) * aTan + params->player.posX;
 		ray->offsetY = -params->map.prop;
 		ray->offsetX = -ray->offsetY * aTan;
 	}
-	else
-	{
-		printf("%f\n", rays);
-		ray->X = params->player.posX;
-		ray->Y = params->player.posY;
-		// dof = params->map.height;
-	}
-	
 	while (dof < params->map.height)
 	{
 		ray->mx = ray->X / params->map.prop;
@@ -69,33 +56,20 @@ void	calculate_ray_vertical(t_params *params, t_ray *ray, float rays)
 
 	dof = 0;
 	nTan = tan(rays);
-	
-	// ------------------------------
-	// --- Check Vertical Lines -----
-	// ------------------------------
-	
-	if (sin(degToRad(rays)) > 0.001)
+	if (rays > PI / 2 && rays < 3 * PI / 2)
 	{
 		ray->X = roundDown(params->player.posX, params->map.prop) - 0.0001;
 		ray->Y = (params->player.posX - ray->X) * nTan + params->player.posY;
 		ray->offsetX = -params->map.prop;
 		ray->offsetY = -ray->offsetX * nTan;
 	}
-	else if (sin(degToRad(rays)) < -0.001)
+	else if (rays < PI / 2 || rays > 3 * PI / 2)
 	{
 		ray->X = roundUp(params->player.posX, params->map.prop);
 		ray->Y = (params->player.posX - ray->X) * nTan + params->player.posY;
 		ray->offsetX = params->map.prop;
 		ray->offsetY = -ray->offsetX * nTan;
 	}
-	else
-	{
-		printf("%f\n", rays);
-		ray->X = params->player.posX;
-		ray->Y = params->player.posY;
-		dof = params->map.height;
-	}
-	
 	while (dof < params->map.width)
 	{
 		ray->mx = ray->X / params->map.prop;
@@ -112,13 +86,13 @@ void	calculate_ray_vertical(t_params *params, t_ray *ray, float rays)
 	}
 }
 
-
 void	trace_ray(t_params *params)
 {
+	t_ray	ray_v;
+	t_ray	ray_h;
 	double	r;
 	double	disT;
 	float	rays;
-	t_ray	ray_h, ray_v, ray_t;
 
 	rays = params->player.angle - (RD * 60 / WIDTH) * (WIDTH / 2);
 	if (rays < 0)
@@ -131,82 +105,45 @@ void	trace_ray(t_params *params)
 	{
 		calculate_ray_horizontal(params, &ray_h, rays);
 		calculate_ray_vertical(params, &ray_v, rays);
-		
 		double	disH = 10000000;
-		disH = dist(params->player.posX, params->player.posY, ray_h.X, ray_h.Y);
-
 		double	disV = 10000000;
+		
 		disV = dist(params->player.posX, params->player.posY, ray_v.X, ray_v.Y);
+		disH = dist(params->player.posX, params->player.posY, ray_h.X, ray_h.Y);
 	
-
-		if (disV < disH)
+		if (ray_v.Y > params->player.posY && (rays > PI / 2  - 0.1 && rays < PI / 2 + 0.1))
+			disV = 10000000;
+		if (ray_v.Y < params->player.posY && (rays > (3 * PI / 2) - 0.1 && rays < (3 * PI / 2) + 0.1))
+			disV = 10000000;
+		if (ray_h.X > params->player.posX && (rays > PI - 0.1 && rays < PI + 0.1))
+			disH = 10000000;
+		if (ray_h.X < params->player.posX && (rays > 2 * PI - 0.1 || rays < 0 + 0.1))
+			disH = 10000000;
+		
+		if (disV <= disH)
 		{
 			params->vertical = 1;
-			ray_t = ray_v;
 			disT = disV;
 			if (rays > PI / 2 && rays < 3 * PI / 2)
-				persp(params, rays, r, disT, params->map.texture_ea, ray_t);
+				persp(params, rays, r, disT, params->map.texture_ea, ray_v);
 			else
-				persp(params, rays, r, disT, params->map.texture_we, ray_t);
+				persp(params, rays, r, disT, params->map.texture_we, ray_v);
 		}
 		else if (disH < disV)
 		{
-			ray_t = ray_h;
 			disT = disH;
 			params->vertical = 0;
 			if (rays > PI)
-				persp(params, rays, r, disT, params->map.texture_so, ray_t);
+				persp(params, rays, r, disT, params->map.texture_so, ray_h);
 			else
-				persp(params, rays, r, disT, params->map.texture_no, ray_t);
+				persp(params, rays, r, disT, params->map.texture_no, ray_h);
 		}
-		// join_pixels(params, params->player.posX, params->player.posY, ray_t.X, ray_t.Y, 0x4000FF); // rayos
-		// persp(params, rays, r, disT, texture);
-
 		rays += (RD * 60 / WIDTH);
 		if (rays < 0)
 			rays += 2 * PI;
 		if (rays > 2 * PI)
-			rays -= 2 * PI;
-		
+			rays -= 2 * PI;	
 	}
-}
-
-void join_pixels(t_params *params, int x0, int y0, int x1, int y1, int colour)
-{
-    int    dx;
-    int    dy;
-    int    err;
-    int    e2;
-    int    sx;
-    int    sy;
-    
-    dx = abs(x1 - x0);
-    dy = abs(y1 - y0);
-    sx = -1;
-    if (x0 < x1)
-        sx = 1;
-    sy = -1;
-    if (y0 < y1)
-        sy = 1;
-    err = -dy / 2;
-    if (dx > dy)
-        err = dx / 2;
-    while (x0 != x1 || y0 != y1)
-    {
-        if (y0 < HEIGHT && x0 < WIDTH && y0 > 0 && x0 > 0)
-            put_pixel(params, x0, y0, colour);
-        e2 = err;
-        if (e2 > -dx)
-        {
-            err -= dy;
-            x0 += sx;
-        }
-        if (e2 < dy)
-        {
-            err += dx;
-            y0 += sy;
-        }
-    }
 }
 
 int roundUp(int numToRound, int multiple)
@@ -238,15 +175,40 @@ double dist(double ax, double ay, double bx, double by)
 	return (sqrt((bx - ax) * (bx - ax) + (by - ay) * (by - ay)));
 }
 
-float degToRad(int a)
-{
-	return a * PI / 180.0;
-}
-float FixAng(int a)
-{
-	if (a > 359)
-		a -= 360;
-	if (a < 0)
-		a += 360;
-	return a;
-}
+// void join_pixels(t_params *params, int x0, int y0, int x1, int y1, int colour)
+// {
+//     int    dx;
+//     int    dy;
+//     int    err;
+//     int    e2;
+//     int    sx;
+//     int    sy;
+    
+//     dx = abs(x1 - x0);
+//     dy = abs(y1 - y0);
+//     sx = -1;
+//     if (x0 < x1)
+//         sx = 1;
+//     sy = -1;
+//     if (y0 < y1)
+//         sy = 1;
+//     err = -dy / 2;
+//     if (dx > dy)
+//         err = dx / 2;
+//     while (x0 != x1 || y0 != y1)
+//     {
+//         if (y0 < HEIGHT && x0 < WIDTH && y0 > 0 && x0 > 0)
+//             put_pixel(params, x0, y0, colour);
+//         e2 = err;
+//         if (e2 > -dx)
+//         {
+//             err -= dy;
+//             x0 += sx;
+//         }
+//         if (e2 < dy)
+//         {
+//             err += dx;
+//             y0 += sy;
+//         }
+//     }
+// }

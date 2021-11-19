@@ -6,23 +6,23 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:15:25 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/11/16 18:59:53 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/19 23:05:06 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3D.h"
 
-int	key_hook(int keycode, t_params *params)
+void	init_controls(t_params *params)
 {
-	key_hook1(keycode, params);
-	key_hook2(keycode, params);
-	// key_hook3(keycode, params);
-	// key_hook4(keycode, params);
-	refresh_image(params);
-	return (0);
+	params->player.controls.right = 0;
+	params->player.controls.left = 0;
+	params->player.controls.w = 0;
+	params->player.controls.s = 0;
+	params->player.controls.a = 0;
+	params->player.controls.d = 0;
 }
 
-void	key_hook1(int keycode, t_params *params)
+int	key_press(int keycode, t_params *params)
 {
 	if (keycode == ESC)
 	{
@@ -31,61 +31,78 @@ void	key_hook1(int keycode, t_params *params)
 	}
 	if (keycode == DEL)
 		init_player(params);
-	
+	if (keycode == RIGHT)
+		params->player.controls.right = 1;
 	if (keycode == LEFT)
+		params->player.controls.left = 1;
+	if (keycode == W)
+		params->player.controls.w = 1;
+	if (keycode == S)
+		params->player.controls.s = 1;
+	if (keycode == A)
+		params->player.controls.a = 1;
+	if (keycode == D)
+		params->player.controls.d = 1;
+	return (0);
+}
+
+int	key_release(int keycode, t_params *params)
+{
+	if (keycode == RIGHT)
+		params->player.controls.right = 0;
+	if (keycode == LEFT)
+		params->player.controls.left = 0;
+	if (keycode == W)
+		params->player.controls.w = 0;
+	if (keycode == S)
+		params->player.controls.s = 0;
+	if (keycode == A)
+		params->player.controls.a = 0;
+	if (keycode == D)
+		params->player.controls.d = 0;
+	return (0);
+}
+
+void	controls_move(t_params *params)
+{
+	if (params->player.controls.w)
+	{
+		params->player.posY -= params->player.dposY * 4;
+		params->player.posX += params->player.dposX * 4;
+	}
+	if (params->player.controls.s)
+	{
+		params->player.posY += params->player.dposY * 3;
+		params->player.posX -= params->player.dposX * 3;
+	}
+	if (params->player.controls.a)
+	{
+		params->player.posY -= params->player.dposX * 4;
+		params->player.posX -= params->player.dposY * 4;
+	}
+	if (params->player.controls.d)
+	{
+		params->player.posY += params->player.dposX * 3;
+		params->player.posX += params->player.dposY * 3;
+	}
+}
+
+void	controls_rotate(t_params *params)
+{
+	if (params->player.controls.left == 1)
 	{
 		params->player.angle += 0.1;
 		if (params->player.angle > 2 * PI)
 			params->player.angle -= 2 * PI;
-		params->player.dposX = cos(params->player.angle) * 5;
-		params->player.dposY = sin(params->player.angle) * 5;
+		params->player.dposX = cos(params->player.angle) * 2;
+		params->player.dposY = sin(params->player.angle) * 2;
 	}
-	if (keycode == RIGHT)
+	if (params->player.controls.right == 1)
 	{
 		params->player.angle -= 0.1;
 		if (params->player.angle < 0)
 			params->player.angle += 2 * PI;
-		params->player.dposX = cos(params->player.angle) * 5;
-		params->player.dposY = sin(params->player.angle) * 5;
+		params->player.dposX = cos(params->player.angle) * 3;
+		params->player.dposY = sin(params->player.angle) * 3;
 	}
 }
-
-void	key_hook2(int keycode, t_params *params)
-{
-	if (keycode == W)
-	{
-		params->player.posY -= params->player.dposY;
-		params->player.posX += params->player.dposX;
-	}
-	if (keycode == S)
-	{
-		params->player.posY += params->player.dposY;
-		params->player.posX -= params->player.dposX;
-	}
-	if (keycode == A)
-	{
-		params->player.posY -= params->player.dposX;
-		params->player.posX -= params->player.dposY;
-	}
-	if (keycode == D)
-	{
-		params->player.posY += params->player.dposX;
-		params->player.posX += params->player.dposY;
-	}
-}
-
-// void	key_hook3(int keycode, t_params *params)
-// {
-// 	if (keycode == RED)
-// 	{
-// 		r += 10;
-// 		if (r > 255)
-// 			r = 255;
-// 	}
-// }
-
-// void	key_hook4(int keycode, t_params *params)
-// {
-// 	if (keycode == DEL)
-// 		params_reset(params);
-// }

@@ -6,11 +6,17 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 19:46:35 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/11/13 12:14:11 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/19 22:55:15 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../includes/cub3D.h" 
+
+void	exit_error(char *str)
+{
+	printf("Error\n%s", str);
+	exit(1);
+}
 
 void init_params(t_params *params)
 {
@@ -26,7 +32,7 @@ void init_params(t_params *params)
 	params->n_path = NULL;
 	params->w_path = NULL;
 	params->s_path = NULL;
-	params->n_path = NULL;
+	params->e_path = NULL;
 	while (i-- > 0)
 	{
 		params->floor[i] = -1;
@@ -52,21 +58,13 @@ void	textures_load(t_params *params)
 			params->e_path, &width, &height);
 }
 
-
 void cleaks()
 {
 	system("leaks cub3D");
 }
 
-void	exit_error(char *str)
-{
-	printf("Error\n%s", str);
-	exit(1);
-}
-
 int main(int argc, char **argv)
 {
-	// char        *relative_path = "../img/img.xpm";
 	t_params    params;
 
 // atexit(cleaks);
@@ -77,7 +75,5 @@ int main(int argc, char **argv)
 	init_params(&params);
 	parse_data(argv[1], &params);
 	build_mlx(&params);
-
 	return (0);
-
 }

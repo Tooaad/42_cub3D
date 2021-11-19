@@ -6,7 +6,7 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 15:56:00 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/11/10 17:40:23 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/19 22:54:21 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ void	parse_data(char *file, t_params *params)
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 		exit_error("invalid map file");
-	skip_lines = parse_info(params, fd);
+	skip_lines = parse_info(params, fd, 0, 3);
 	if (skip_lines == 0)
 		exit_error("texture or color argument missing");
-	get_map_size(fd, params);
+	get_map_size(params, "01 NSWE", fd);
 	close(fd);
 	fd = open(file, O_RDONLY);
 	get_map_values(skip_lines, fd, params);
@@ -32,15 +32,13 @@ void	parse_data(char *file, t_params *params)
 		params->map.prop = HEIGHT / params->map.height;
 	else
 		params->map.prop = HEIGHT / params->map.width;
+	params->map.prop = 64;
 	check_map(params->map);
 }
 
-int	parse_info(t_params *params, int fd)
+// i y j son contadores
+int	parse_info(t_params *params, int fd, int i, int j)
 {
-	int		j;
-	int		i;
-
-	i = 0;
 	while (get_next_line(fd, &params->line) != 0)
 	{
 		j = 3;
@@ -61,27 +59,34 @@ int	parse_info(t_params *params, int fd)
 		else if (params->line[0] == '\0' && ++i)
 			i--;
 		else
-			break;
+			break ;
 		i++;
 		printf("%s\n", params->line);
 		free(params->line);
 	}
-	printf("%d\n", i);
 	return (parse_info_errors(params, i));
 }
 
 char	*get_data(char *line, int d)
 {
-	int	i;
+	int		i;
+	char	*file;
+	char	*isExtension;
 
 	i = 0;
 	if (d == 4)
 	{	
 		while (!ft_strchr(".", *line))
 			line++;
-		while (line[i] > 32 && line[i] < 127 )
+		while (line[i] > 32 && line[i] < 127)
 			i++;
-		return (ft_substr(line, 0, i));
+		file = ft_substr(line, 0, i);
+		isExtension = ft_strnstr(file, ".xpm", ft_strlen(file));
+		if (isExtension == NULL)
+			exit_error("No se encontro archivo .xpm");
+		if (ft_strlen(isExtension) > 4)
+			exit_error("No se encontro archivo .xpm");
+		return (file);
 	}
 	else
 	{
@@ -91,9 +96,9 @@ char	*get_data(char *line, int d)
 	}
 }
 
-int parse_info_errors(t_params *params, int skip_lines)
+int	parse_info_errors(t_params *params, int skip_lines)
 {
-	int fd;
+	int	fd;
 
 	if (params->n_path == NULL || params->w_path == NULL
 		|| params->s_path == NULL || params->e_path == NULL
@@ -118,12 +123,10 @@ int parse_info_errors(t_params *params, int skip_lines)
 	return (skip_lines);
 }
 
-void	get_map_size(int fd, t_params *params)
+void	get_map_size(t_params *params, char *c, int fd)
 {
-	char	*c;
 	int		width;
 
-	c = "01 NSWE";
 	while (params->line[0] != '\0')
 	{
 		width = 0;
