@@ -6,7 +6,7 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 20:39:59 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/11/20 01:33:17 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/20 14:11:10 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@
 # define PI		3.14159
 # define RD		0.0174533
 
+
+
 typedef struct	s_controls
 {
 	int				right;
@@ -47,7 +49,6 @@ typedef struct	s_controls
 	int				s;
 	int				d;
 }				t_controls;
-
 
 typedef struct	s_texture
 {
@@ -76,6 +77,7 @@ typedef struct s_player
 	t_controls		controls;
 	t_ray			horiz;
 	t_ray			vert;
+	float			disT;
 	float			posX;		// Start Position
 	float			posY;
 	float			angle;		// Player angle	

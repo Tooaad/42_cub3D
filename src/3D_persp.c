@@ -6,25 +6,28 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/08 11:46:56 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/11/19 23:36:13 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/20 14:58:59 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3D.h"
 
-void	persp(t_params *params, float rays, float r, float disT, t_texture *texture, t_ray ray_t)
+void	persp(t_params *params,  t_texture *texture, float rays, float r)
 {
-	int		j;
+	t_ray	ray_t;
 	float	ca;
 	float	lineH;
 	float	lineO;
+	int		j;
+
+	if (vertical == 1)
 
 	ca = params->player.angle - rays;
 	if (ca < 0)
 		ca += 2 * PI;
 	if (ca > 2 * PI)
 		ca -= 2 * PI;
-	lineH = (100 * HEIGHT) / (disT * cos(ca));
+	lineH = (100 * HEIGHT) / (params->disT * cos(ca));
 
 	float ty_step = texture->height / (float) lineH;
 	float ty_off = 0;

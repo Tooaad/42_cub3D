@@ -6,7 +6,7 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 11:35:06 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/11/20 03:51:19 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/20 14:16:25 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,9 @@ void	trace_ray(t_params *params)
 	}
 }
 
+
+// disV se puede pasar por estructura en 3D_persp
+// if vertical == 1 usaremos player.vert, si no horiz
 void	calculate_distance(t_params *params, float rays, float r)
 {
 	params->ray.disH = 10000000;
@@ -123,18 +126,20 @@ void	calculate_distance(t_params *params, float rays, float r)
 	if (params->ray.disV <= params->ray.disH)
 	{
 		params->vertical = 1;
+		params->player.disT = params->ray.disV;
 		if (rays > PI / 2 && rays < 3 * PI / 2)
-			persp(params, rays, r, params->ray.disV, params->map.texture_ea, params->player.vert);
+			persp(params, params->map.texture_ea, rays, r);
 		else
-			persp(params, rays, r, params->ray.disV, params->map.texture_we, params->player.vert);
+			persp(params, params->map.texture_we, rays, r);
 	}
 	else
 	{
 		params->vertical = 0;
+		params->player.disT = params->ray.disH;
 		if (rays > PI)
-			persp(params, rays, r, params->ray.disH, params->map.texture_so, params->player.horiz);
+			persp(params, params->map.texture_so, rays, r);
 		else
-			persp(params, rays, r, params->ray.disH, params->map.texture_no, params->player.horiz);
+			persp(params, params->map.texture_no, rays, r);
 	}
 }
 
