@@ -6,7 +6,7 @@
 #    By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/05 18:36:42 by gpernas-          #+#    #+#              #
-#    Updated: 2021/11/13 11:52:00 by gpernas-         ###   ########.fr        #
+#    Updated: 2021/11/19 23:39:15 by gpernas-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,9 @@ C_CUB        =  	cub3D.c 		\
 					manage_window.c	\
 					minimap.c		\
 					create_rays.c	\
-					3D_persp.c
+					3D_persp.c		\
+					ray_utils.c		\
+					texture_utils.c	\
 
 SRCSFD          =    src/
 OBJSFD          =    objs/

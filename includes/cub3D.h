@@ -6,7 +6,7 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 20:39:59 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/11/19 22:26:19 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/20 01:33:17 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,25 +58,29 @@ typedef struct	s_texture
 
 typedef struct	s_ray
 {
-	double			X;
-	double			Y;
-	double			angle;
-	double			aView;
-	double			nView;
+	float			disH;
+	float			disV;
+	float			X;
+	float			Y;
+	float			angle;
+	float			aView;
+	float			nView;
+	float			offsetX;
+	float			offsetY;
 	int				mx;
 	int				my;
-	double			offsetX;
-	double			offsetY;
 }				t_ray;
 
 typedef struct s_player
 {
 	t_controls		controls;
-	double			posX;		// Start Position
-	double			posY;
-	double			angle;		// Player angle	
-	double			dposX;		// Start Rotation
-	double			dposY;
+	t_ray			horiz;
+	t_ray			vert;
+	float			posX;		// Start Position
+	float			posY;
+	float			angle;		// Player angle	
+	float			dposX;		// Start Rotation
+	float			dposY;
 }				t_player;
 
 typedef struct s_map
@@ -152,20 +156,25 @@ void	draw_grid(t_params *params);
 void	draw_ray(t_params *params);
 void	draw_map(t_params *params);
 
-//
+// create_rays
 void	calculate_ray_horizontal(t_params *params, t_ray *ray, float rays);
 void	calculate_ray_vertical(t_params *params, t_ray *ray, float rays);
 void	trace_ray(t_params *params);
-void	join_pixels(t_params *params, int x2, int y2, int x1, int y1, int colour);
-void 	join_pixels_texture(t_params *params, int x0, int y0, int x1, int y1, int colour);
+void	calculate_distance(t_params *params, float rays, float r);
+void	fix_rays(t_player player, t_ray ray, float ra);
+
+// 
+void	persp(t_params *params, float rays, float ra, float disT, t_texture *texture, t_ray ray_t);
+
+// ray_utils
 int		roundUp(int numToRound, int multiple);
 int		roundDown(int numToRound, int multiple);
-double	dist(double ax, double ay, double bx, double by);
+float	dist(float ax, float ay, float bx, float by);
+void	join_pixels(t_params *params, int x2, int y2, int x1, int y1, int colour);
 
-//
-void	persp(t_params *params, float rays, double ra, double disT, t_texture *texture, t_ray ray_t);
+// texture_utils
 int		RGBtoHEX(int r, int g, int b);
 int		get_tex_colour(t_texture *tex, int x, int y);
-float	degToRad(int a);
+
 
 #endif

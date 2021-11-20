@@ -6,7 +6,7 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 11:35:06 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/11/19 23:29:12 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/20 03:51:19 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	calculate_ray_horizontal(t_params *params, t_ray *ray, float rays)
 {
 	int		dof;
-	double	aTan;
+	float	aTan;
 
 	dof = 0;
 	aTan = 1 / tan(rays);
@@ -52,7 +52,7 @@ void	calculate_ray_horizontal(t_params *params, t_ray *ray, float rays)
 void	calculate_ray_vertical(t_params *params, t_ray *ray, float rays)
 {
 	int		dof;
-	double	nTan;
+	float	nTan;
 
 	dof = 0;
 	nTan = tan(rays);
@@ -75,7 +75,8 @@ void	calculate_ray_vertical(t_params *params, t_ray *ray, float rays)
 		ray->mx = ray->X / params->map.prop;
 		ray->my = ray->Y / params->map.prop;
 		
-		if (ray->mx < params->map.width && ray->my < params->map.height && ray->mx >= 0 && ray->my >= 0 && params->map.grid[ray->my][ray->mx] == '1')
+		if (ray->mx < params->map.width && ray->my < params->map.height
+			&& ray->mx >= 0 && ray->my >= 0 && params->map.grid[ray->my][ray->mx] == '1')
 			dof = params->map.width;
 		else
 		{
@@ -88,56 +89,20 @@ void	calculate_ray_vertical(t_params *params, t_ray *ray, float rays)
 
 void	trace_ray(t_params *params)
 {
-	t_ray	ray_v;
-	t_ray	ray_h;
-	double	r;
-	double	disT;
 	float	rays;
+	float	r;
 
 	rays = params->player.angle - (RD * 60 / WIDTH) * (WIDTH / 2);
 	if (rays < 0)
 		rays += 2 * PI;
 	if (rays > 2 * PI)
-		rays -= 2 * PI;
-	
+		rays -= 2 * PI;	
 	r = -1;
 	while (++r < RAYS)
 	{
-		calculate_ray_horizontal(params, &ray_h, rays);
-		calculate_ray_vertical(params, &ray_v, rays);
-		double	disH = 10000000;
-		double	disV = 10000000;
-		
-		disV = dist(params->player.posX, params->player.posY, ray_v.X, ray_v.Y);
-		disH = dist(params->player.posX, params->player.posY, ray_h.X, ray_h.Y);
-	
-		if (ray_v.Y > params->player.posY && (rays > PI / 2  - 0.1 && rays < PI / 2 + 0.1))
-			disV = 10000000;
-		if (ray_v.Y < params->player.posY && (rays > (3 * PI / 2) - 0.1 && rays < (3 * PI / 2) + 0.1))
-			disV = 10000000;
-		if (ray_h.X > params->player.posX && (rays > PI - 0.1 && rays < PI + 0.1))
-			disH = 10000000;
-		if (ray_h.X < params->player.posX && (rays > 2 * PI - 0.1 || rays < 0 + 0.1))
-			disH = 10000000;
-		
-		if (disV <= disH)
-		{
-			params->vertical = 1;
-			disT = disV;
-			if (rays > PI / 2 && rays < 3 * PI / 2)
-				persp(params, rays, r, disT, params->map.texture_ea, ray_v);
-			else
-				persp(params, rays, r, disT, params->map.texture_we, ray_v);
-		}
-		else if (disH < disV)
-		{
-			disT = disH;
-			params->vertical = 0;
-			if (rays > PI)
-				persp(params, rays, r, disT, params->map.texture_so, ray_h);
-			else
-				persp(params, rays, r, disT, params->map.texture_no, ray_h);
-		}
+		calculate_ray_horizontal(params, &params->player.horiz, rays);
+		calculate_ray_vertical(params, &params->player.vert, rays);
+		calculate_distance(params, rays, r);
 		rays += (RD * 60 / WIDTH);
 		if (rays < 0)
 			rays += 2 * PI;
@@ -146,69 +111,42 @@ void	trace_ray(t_params *params)
 	}
 }
 
-int roundUp(int numToRound, int multiple)
+void	calculate_distance(t_params *params, float rays, float r)
 {
-	if (multiple == 0)
-		return numToRound;
-
-	int remainder = numToRound % multiple;
-	if (remainder == 0)
-		return numToRound;
-
-	return numToRound + multiple - remainder;
+	params->ray.disH = 10000000;
+	params->ray.disV = 10000000;
+	params->ray.disV = dist(params->player.posX, params->player.posY,
+		params->player.vert.X, params->player.vert.Y);
+	params->ray.disH = dist(params->player.posX, params->player.posY,
+		params->player.horiz.X, params->player.horiz.Y);
+	fix_rays(params->player, params->ray, rays);
+	if (params->ray.disV <= params->ray.disH)
+	{
+		params->vertical = 1;
+		if (rays > PI / 2 && rays < 3 * PI / 2)
+			persp(params, rays, r, params->ray.disV, params->map.texture_ea, params->player.vert);
+		else
+			persp(params, rays, r, params->ray.disV, params->map.texture_we, params->player.vert);
+	}
+	else
+	{
+		params->vertical = 0;
+		if (rays > PI)
+			persp(params, rays, r, params->ray.disH, params->map.texture_so, params->player.horiz);
+		else
+			persp(params, rays, r, params->ray.disH, params->map.texture_no, params->player.horiz);
+	}
 }
 
-int roundDown(int numToRound, int multiple)
+void	fix_rays(t_player player, t_ray ray, float ra)
 {
-	if (multiple == 0)
-		return numToRound;
-
-	int remainder = numToRound % multiple;
-	if (remainder == 0)
-		return numToRound;
-
-	return numToRound - remainder;
+	if (player.vert.Y > player.posY && (ra > PI / 2  - 0.1 && ra < PI / 2 + 0.1))
+		ray.disV = 10000000;
+	else if (player.vert.Y < player.posY
+			&& (ra > (3 * PI / 2) - 0.1 && ra < (3 * PI / 2) + 0.1))
+		ray.disV = 10000000;
+	else if (player.horiz.X > player.posX && (ra > PI - 0.1 && ra < PI + 0.1))
+		ray.disH = 10000000;
+	else if (player.horiz.X < player.posX && (ra > 2 * PI - 0.1 || ra < 0 + 0.1))
+		ray.disH = 10000000;
 }
-
-double dist(double ax, double ay, double bx, double by)
-{
-	return (sqrt((bx - ax) * (bx - ax) + (by - ay) * (by - ay)));
-}
-
-// void join_pixels(t_params *params, int x0, int y0, int x1, int y1, int colour)
-// {
-//     int    dx;
-//     int    dy;
-//     int    err;
-//     int    e2;
-//     int    sx;
-//     int    sy;
-    
-//     dx = abs(x1 - x0);
-//     dy = abs(y1 - y0);
-//     sx = -1;
-//     if (x0 < x1)
-//         sx = 1;
-//     sy = -1;
-//     if (y0 < y1)
-//         sy = 1;
-//     err = -dy / 2;
-//     if (dx > dy)
-//         err = dx / 2;
-//     while (x0 != x1 || y0 != y1)
-//     {
-//         if (y0 < HEIGHT && x0 < WIDTH && y0 > 0 && x0 > 0)
-//             put_pixel(params, x0, y0, colour);
-//         e2 = err;
-//         if (e2 > -dx)
-//         {
-//             err -= dy;
-//             x0 += sx;
-//         }
-//         if (e2 < dy)
-//         {
-//             err += dx;
-//             y0 += sy;
-//         }
-//     }
-// }

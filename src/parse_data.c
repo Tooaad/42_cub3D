@@ -6,7 +6,7 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 15:56:00 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/11/19 22:54:21 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/20 01:23:06 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ int	parse_info(t_params *params, int fd, int i, int j)
 		else
 			break ;
 		i++;
-		printf("%s\n", params->line);
 		free(params->line);
 	}
 	return (parse_info_errors(params, i));
