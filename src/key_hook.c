@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_hook.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: gpernas- <gpernas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:15:25 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/11/19 23:05:06 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/20 19:51:59 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	key_press(int keycode, t_params *params)
 {
 	if (keycode == ESC)
 	{
-		// anti_leaks(params);
+		anti_leaks(params);
 		exit(1);
 	}
 	if (keycode == DEL)
@@ -67,23 +67,23 @@ void	controls_move(t_params *params)
 {
 	if (params->player.controls.w)
 	{
-		params->player.posY -= params->player.dposY * 4;
-		params->player.posX += params->player.dposX * 4;
+		params->player.posY -= params->player.dposY * 3;
+		params->player.posX += params->player.dposX * 3;
 	}
 	if (params->player.controls.s)
 	{
-		params->player.posY += params->player.dposY * 3;
-		params->player.posX -= params->player.dposX * 3;
+		params->player.posY += params->player.dposY * 2;
+		params->player.posX -= params->player.dposX * 2;
 	}
 	if (params->player.controls.a)
 	{
-		params->player.posY -= params->player.dposX * 4;
-		params->player.posX -= params->player.dposY * 4;
+		params->player.posY -= params->player.dposX * 3;
+		params->player.posX -= params->player.dposY * 3;
 	}
 	if (params->player.controls.d)
 	{
-		params->player.posY += params->player.dposX * 3;
-		params->player.posX += params->player.dposY * 3;
+		params->player.posY += params->player.dposX * 2;
+		params->player.posX += params->player.dposY * 2;
 	}
 }
 

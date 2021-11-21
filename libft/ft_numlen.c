@@ -1,35 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstmap.c                                        :+:      :+:    :+:   */
+/*   ft_numlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gpernas- <gpernas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/23 21:19:17 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/11/20 20:59:01 by gpernas-         ###   ########.fr       */
+/*   Created: 2021/11/20 19:27:23 by gpernas-          #+#    #+#             */
+/*   Updated: 2021/11/20 21:00:55 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
+int	ft_numlen(long nb)
 {
-	t_list			*list;
-	t_list			*lstfinal;
-	t_list			*aux;
+	int	len;
 
-	list = lst;
-	lstfinal = NULL;
-	while (list)
+	if (nb == 0)
+		return (1);
+	len = 0;
+	if (nb < 0)
 	{
-		aux = ft_lstnew(f(list->content));
-		if (!aux)
-		{
-			ft_lstclear(&lstfinal, del);
-			return (NULL);
-		}
-		ft_lstadd_back(&lstfinal, aux);
-		list = list->next;
+		nb = nb * -1;
+		len++;
 	}
-	return (lstfinal);
+	while (nb > 0)
+	{
+		nb = nb / 10;
+		len++;
+	}
+	return (len);
 }

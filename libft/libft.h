@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: gpernas- <gpernas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 20:18:02 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/10/19 23:46:28 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/20 19:29:30 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,6 @@ char				*ft_newstr(size_t size);
 int					get_next_line(int fd, char **line);
 void				*ft_memalloc(size_t size);
 int					itoh(unsigned long long int num, int aux, int caps);
+int					ft_numlen(long nb);
 
 #endif

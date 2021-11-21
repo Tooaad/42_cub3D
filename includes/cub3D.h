@@ -6,11 +6,11 @@
 /*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 20:39:59 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/11/20 14:11:10 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/21 02:43:17 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB3D_H 
+#ifndef CUB3D_H
 # define CUB3D_H
 
 # include "../libft/libft.h"
@@ -38,9 +38,16 @@
 # define PI		3.14159
 # define RD		0.0174533
 
+typedef struct s_wall
+{
+	float			lineH;
+	float			lineO;
+	float			ty_step;
+	float			ty;
+	float			tx;
+}				t_wall;
 
-
-typedef struct	s_controls
+typedef struct s_controls
 {
 	int				right;
 	int				left;
@@ -50,14 +57,15 @@ typedef struct	s_controls
 	int				d;
 }				t_controls;
 
-typedef struct	s_texture
+typedef struct s_texture
 {
 	int				height;
 	int				width;
 	unsigned int	*img_adr;
+	t_wall			wall;
 }				t_texture;
 
-typedef struct	s_ray
+typedef struct s_ray
 {
 	float			disH;
 	float			disV;
@@ -70,7 +78,7 @@ typedef struct	s_ray
 	float			offsetY;
 	int				mx;
 	int				my;
-}				t_ray;
+}					t_ray;
 
 typedef struct s_player
 {
@@ -78,10 +86,10 @@ typedef struct s_player
 	t_ray			horiz;
 	t_ray			vert;
 	float			disT;
-	float			posX;		// Start Position
+	float			posX;
 	float			posY;
-	float			angle;		// Player angle	
-	float			dposX;		// Start Rotation
+	float			angle;
+	float			dposX;
 	float			dposY;
 }				t_player;
 
@@ -120,42 +128,43 @@ typedef struct s_params
 	int				vertical;
 }					t_params;
 
-//
+// cub3D
 void	exit_error(char *str);
 void	textures_load(t_params *params);
-//
+void	anti_leaks(t_params	*params);
+
+// parse_data
 void	parse_data(char *file, t_params *params);
-int		parse_info(t_params *params, int fd, int i, int j);
-char	*get_data(char *line, int d);
+int		parse_info(t_params *params, int fd, int i);
+char	*get_data(t_params *params, char *line, int d);
+void	get_data2(t_params *params, char **colour, int d, int i);
 int		parse_info_errors(t_params *params, int skip_lines);
 void	get_map_size(t_params *params, char *c, int fd);
 
-//
+// parse_map
 void	get_map_values(int skip_lines, int fd, t_params *params);
 void	get_row_values(int i, int skip_lines, int fd, t_params *params);
 void	check_map(t_map map);
 void	check_zeros(t_map map);
 void	surrounded(char *c, int i, int j, t_map map);
 
-//
-void    init_player(t_params *params);
+// manage_window
+void	init_player(t_params *params);
 int		refresh_image(t_params *params);
 int		build_mlx(t_params *params);
 
-//
-void    init_controls(t_params *params);
+// key_hook
+void	init_controls(t_params *params);
 int		key_press(int keycode, t_params *params);
 int		key_release(int keycode, t_params *params);
-void    controls_move(t_params *params);
-void    controls_rotate(t_params *params);
+void	controls_move(t_params *params);
+void	controls_rotate(t_params *params);
 
-//
-void	paint_background(t_params *params, int colour);
+// minimap
 void	put_pixel(t_params *params, int x, int y, int color);
 void	draw_player(t_params *params);
 void	paint_square(t_params *params, int x, int y, int colour);
 void	draw_grid(t_params *params);
-void	draw_ray(t_params *params);
 void	draw_map(t_params *params);
 
 // create_rays
@@ -163,20 +172,24 @@ void	calculate_ray_horizontal(t_params *params, t_ray *ray, float rays);
 void	calculate_ray_vertical(t_params *params, t_ray *ray, float rays);
 void	trace_ray(t_params *params);
 void	calculate_distance(t_params *params, float rays, float r);
-void	fix_rays(t_player player, t_ray ray, float ra);
+void	fix_rays(t_params *params, t_player player, float ra);
 
-// 
-void	persp(t_params *params, float rays, float ra, float disT, t_texture *texture, t_ray ray_t);
+// walls
+void	trace_walls(t_params *params, t_texture *texture, float rays, float ra);
+void	calculate_walls(t_params *params, t_texture *texture, t_ray ray_t,
+			float rays);
+void	draw_walls(t_params *params, t_texture *texture, float r);
+int		dist_limit(t_params *params, t_ray *ray, int dof, int direc);
 
 // ray_utils
 int		roundUp(int numToRound, int multiple);
 int		roundDown(int numToRound, int multiple);
 float	dist(float ax, float ay, float bx, float by);
-void	join_pixels(t_params *params, int x2, int y2, int x1, int y1, int colour);
+// void	join_pixels(t_params *params, int x2, int y2,
+// 			int x1, int y1, int colour);
 
 // texture_utils
 int		RGBtoHEX(int r, int g, int b);
 int		get_tex_colour(t_texture *tex, int x, int y);
-
 
 #endif

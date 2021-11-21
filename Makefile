@@ -6,7 +6,7 @@
 #    By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/05 18:36:42 by gpernas-          #+#    #+#              #
-#    Updated: 2021/11/19 23:39:15 by gpernas-         ###   ########.fr        #
+#    Updated: 2021/11/21 02:42:27 by gpernas-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,11 +16,12 @@ NAME            =	cub3D
 C_CUB        =  	cub3D.c 		\
 					parse_map.c		\
 					parse_data.c	\
+					parse_data2.c	\
 					key_hook.c		\
 					manage_window.c	\
 					minimap.c		\
 					create_rays.c	\
-					3D_persp.c		\
+					walls.c			\
 					ray_utils.c		\
 					texture_utils.c	\
 
@@ -35,7 +36,7 @@ OBJS_CUB     =    $(addprefix $(OBJSFD), $(C_CUB:.c=.o))
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # Compilation
-CFLAGS			=    -Wall -Wextra -Werror -fsanitize=address # FOR LEAKS
+CFLAGS			=    -Wall -Wextra -Werror #-fsanitize=address # FOR LEAKS
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # Colors

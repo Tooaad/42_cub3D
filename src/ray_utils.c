@@ -3,41 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   ray_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: gpernas- <gpernas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 23:32:38 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/11/19 23:36:00 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/20 17:08:46 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3D.h"
 
-int roundUp(int numToRound, int multiple)
+int	roundUp(int numToRound, int multiple)
 {
-	int remainder;
+	int	remainder;
 
 	remainder = numToRound % multiple;
 	if (multiple == 0 || remainder == 0)
-		return numToRound;
+		return (numToRound);
 	return (numToRound + multiple - remainder);
 }
 
-int roundDown(int numToRound, int multiple)
+int	roundDown(int numToRound, int multiple)
 {
-	int remainder;
+	int	remainder;
 
 	remainder = numToRound % multiple;
 	if (multiple == 0 || remainder == 0)
-		return numToRound;
+		return (numToRound);
 	return (numToRound - remainder);
 }
 
-float dist(float ax, float ay, float bx, float by)
+float	dist(float ax, float ay, float bx, float by)
 {
 	return (sqrt((bx - ax) * (bx - ax) + (by - ay) * (by - ay)));
 }
 
-// void join_pixels(t_params *params, int x0, int y0, int x1, int y1, int colour)
+// void join_pixels(t_params *params, int x0, int y0, int x1, int y1,
+//	int colour)
 // {
 //     int    dx;
 //     int    dy;
@@ -45,7 +46,6 @@ float dist(float ax, float ay, float bx, float by)
 //     int    e2;
 //     int    sx;
 //     int    sy;
-    
 //     dx = abs(x1 - x0);
 //     dy = abs(y1 - y0);
 //     sx = -1;

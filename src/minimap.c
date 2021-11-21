@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: gpernas- <gpernas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/29 16:25:51 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/11/19 20:30:53 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/20 17:09:03 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void	paint_square(t_params *params, int x, int y, int colour)
 	int	xo;
 	int	yo;
 	int	minmap_prop;
-
 
 	minmap_prop = (params->map.prop * MINMAP / 100);
 	yo = y * minmap_prop;

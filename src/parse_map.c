@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpernas- <gpernas-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: gpernas- <gpernas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 02:40:56 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/11/19 18:05:18 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/20 21:02:21 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ void	get_map_values(int skip_lines, int fd, t_params *params)
 		get_row_values(i, skip_lines, fd, params);
 		i++;
 	}
+	if (params->map.direction == '\0')
+		exit_error("Direction not found");
 }
 
 void	get_row_values(int i, int skip_lines, int fd, t_params *params)
