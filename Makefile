@@ -32,6 +32,10 @@ LIBFT_HDR 		= 	 -I./libft/includes/
 LIB_BINARY 		= 	 -L./libft -lft
 LIBFT 			= 	 libft/libft.a
 
+MLX_DIR = minilibx-linux
+MLX = libmlx.a 
+# LINUXLIBS		= 	-I ./Includes -I ./libft/ -L. -lmlx_Linux -lm -lXext -lX11 -lbsd -L ./libft -lft
+
 OBJS_CUB     =    $(addprefix $(OBJSFD), $(C_CUB:.c=.o))
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
@@ -89,4 +93,3 @@ fclean: clean
 re: fclean all
 
 .PHONY: project all clean fclean re
-
