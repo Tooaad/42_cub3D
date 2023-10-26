@@ -1,6 +1,8 @@
 # cub3D🕹️
 Recreation of a FPS game using raycasting
 
+[![Image from Gyazo](https://i.gyazo.com/ca3684da0ade3dc60a68979994845ac6.gif)](https://gyazo.com/ca3684da0ade3dc60a68979994845ac6)
+
 ## Commands
 
 | Key   | Action |
@@ -12,6 +14,4 @@ Recreation of a FPS game using raycasting
 | `D` | move right |
 | `→` | turn camera to right |
 | `←` | turn camera to left |
-
-[![Image from Gyazo](https://i.gyazo.com/ca3684da0ade3dc60a68979994845ac6.gif)](https://gyazo.com/ca3684da0ade3dc60a68979994845ac6)
 
