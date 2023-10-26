@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_data2.c                                      :+:      :+:    :+:   */
+/*   parse_data2_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gpernas- <gpernas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/21 02:08:40 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/11/21 19:04:48 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/21 19:04:39 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3D.h"
+#include "../includes/cub3D_bonus.h"
 
 void	get_data2(t_params *params, char **colour)
 {

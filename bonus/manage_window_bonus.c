@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   manage_window.c                                    :+:      :+:    :+:   */
+/*   manage_window_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gpernas- <gpernas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/22 18:12:58 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/11/21 19:05:58 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/21 18:13:00 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3D.h"
+#include "../includes/cub3D_bonus.h"
 
 void	put_pixel(t_params *params, int x, int y, int color)
 {
@@ -24,6 +24,19 @@ void	put_pixel(t_params *params, int x, int y, int color)
 int	close_win()
 {
 	exit(1);
+}
+
+int	refresh_image(t_params *params)
+{
+	controls_move(params);
+	controls_rotate(params);
+	draw_map(params);
+	mlx_put_image_to_window(params->mlx, params->win, params->img, 0, 0);
+	mlx_destroy_image(params->mlx, params->img);
+	params->img = mlx_new_image(params->mlx, WIDTH, HEIGHT);
+	params->img_adr = mlx_get_data_addr(params->img, &(params->bits_per_pixel),
+			&(params->size_line), &(params->endian));
+	return (0);
 }
 
 void	init_player(t_params *params)
@@ -42,19 +55,6 @@ void	init_player(t_params *params)
 		+ params->map.prop / 2;
 	params->player.posY = params->player.posY * params->map.prop
 		+ params->map.prop / 2;
-}
-
-int	refresh_image(t_params *params)
-{
-	controls_move(params);
-	controls_rotate(params);
-	trace_ray(params);
-	mlx_put_image_to_window(params->mlx, params->win, params->img, 0, 0);
-	mlx_destroy_image(params->mlx, params->img);
-	params->img = mlx_new_image(params->mlx, WIDTH, HEIGHT);
-	params->img_adr = mlx_get_data_addr(params->img, &(params->bits_per_pixel),
-			&(params->size_line), &(params->endian));
-	return (0);
 }
 
 int	build_mlx(t_params *params)

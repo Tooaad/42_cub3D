@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3D.h                                            :+:      :+:    :+:   */
+/*   cub3D_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gpernas- <gpernas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 20:39:59 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/11/21 19:01:47 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/21 19:02:05 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB3D_H
-# define CUB3D_H
+#ifndef CUB3D_BONUS_H
+# define CUB3D_BONUS_H
 
 # include "../libft/libft.h"
 # include <unistd.h>
@@ -163,6 +163,12 @@ int		key_press(int keycode, t_params *params);
 int		key_release(int keycode, t_params *params);
 void	controls_move(t_params *params);
 void	controls_rotate(t_params *params);
+
+// minimap
+void	draw_player(t_params *params);
+void	paint_square(t_params *params, int x, int y, int colour);
+void	draw_grid(t_params *params);
+void	draw_map(t_params *params);
 
 // create_rays
 void	fix_rays(t_params *params, t_player player, float ra);

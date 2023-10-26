@@ -1,22 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3D.c                                            :+:      :+:    :+:   */
+/*   cub3D_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gpernas- <gpernas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 19:46:35 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/11/21 19:32:47 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/21 18:13:03 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3D.h" 
-
-void	exit_error(char *str)
-{
-	printf("Error\n%s", str);
-	exit(1);
-}
+#include "../includes/cub3D_bonus.h" 
 
 void	anti_leaks(t_params	*params)
 {
@@ -33,6 +27,12 @@ void	anti_leaks(t_params	*params)
 	free(params->s_path);
 	free(params->e_path);
 	free(params->w_path);
+}
+
+void	exit_error(char *str)
+{
+	printf("Error\n%s", str);
+	exit(1);
 }
 
 void	init_params(t_params *params)
@@ -76,8 +76,8 @@ void	textures_load(t_params *params)
 // {
 // 	system("leaks cub3D");
 // }
-	// atexit(cleaks);
 
+	// atexit(cleaks);
 int	main(int argc, char **argv)
 {
 	t_params	params;
@@ -89,5 +89,6 @@ int	main(int argc, char **argv)
 	init_params(&params);
 	parse_data(argv[1], &params);
 	build_mlx(&params);
+	close_win(&params);
 	return (0);
 }

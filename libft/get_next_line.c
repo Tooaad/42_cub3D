@@ -16,10 +16,10 @@ int	fill_line(char **str, char **line, int fd)
 {
 	char	*clean;
 	int		len;
-	// int		i;
+	int		i;
 
 	len = 0;
-	// i = 0;
+	i = 0;
 	while (str[fd][len] != '\n' && str[fd][len] != '\0')
 		len++;
 	if (str[fd][len] == '\n')

@@ -1,25 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minimap.c                                          :+:      :+:    :+:   */
+/*   minimap_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gpernas- <gpernas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/29 16:25:51 by gpernas-          #+#    #+#             */
-/*   Updated: 2021/11/20 17:09:03 by gpernas-         ###   ########.fr       */
+/*   Updated: 2021/11/21 18:12:59 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3D.h"
-
-void	put_pixel(t_params *params, int x, int y, int color)
-{
-	char	*dst;
-
-	dst = params->img_adr + (y * params->size_line + x
-			* (params->bits_per_pixel / 8));
-	*(unsigned int *)dst = color;
-}
+#include "../includes/cub3D_bonus.h"
 
 void	draw_player(t_params *params)
 {

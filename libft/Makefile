@@ -34,9 +34,15 @@ OBJECTS_BONUS	=	ft_lstnew_bonus.o		ft_lstadd_front_bonus.o		ft_lstsize_bonus.o		
 					ft_lstlast_bonus.o		ft_lstadd_back_bonus.o		ft_lstdelone_bonus.o	\
 					ft_lstclear_bonus.o		ft_lstiter_bonus.o			ft_lstmap_bonus.o
 
-INCLUDES		=	.
+INCLUDES		=	./libft.h
 
 CFLAGS 			= 	-Wall -Wextra -Werror
+
+# Colors
+RED             = \033[0;31m
+GREEN           = \033[0;32m
+NONE            = \033[0m
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 
 all: $(NAME)
 
@@ -44,10 +50,12 @@ $(NAME):
 	@gcc $(CFLAGS) -I$(INCLUDES) -c $(SRCS)
 	@ar rc $(NAME) $(OBJECTS)
 	@ranlib $(NAME)
+	@echo "\t[ $(GREEN)✔$(NONE) ] libft loaded"
 bonus:
 	@gcc $(CFLAGS) -I$(INCLUDES) -c $(SRCS) $(SRCS_BONUS)
 	@ar rc $(NAME) $(OBJECTS) $(OBJECTS_BONUS)
 	@ranlib $(NAME)
+	@echo "\t[ $(GREEN)✔$(NONE) ] libft loaded"
 clean:
 	@rm -f *.o
 	@rm -f *.out

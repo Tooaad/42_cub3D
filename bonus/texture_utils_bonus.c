@@ -1,29 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcpy.c                                        :+:      :+:    :+:   */
+/*   texture_utils_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gpernas- <gpernas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/18 20:28:02 by gpernas-          #+#    #+#             */
-/*   Updated: 2019/12/05 21:01:36 by gpernas-         ###   ########.fr       */
+/*   Created: 2021/11/19 23:36:23 by gpernas-          #+#    #+#             */
+/*   Updated: 2021/11/21 18:13:19 by gpernas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../includes/cub3D_bonus.h"
 
-void	*ft_memcpy(void *dst, const void *src, size_t n)
+int	RGBtoHEX(int r, int g, int b)
 {
-	unsigned char		*cdst;
-	unsigned char		*csrc;
-	size_t				i;
+	return (((r & 0xFF) << 16) + ((g & 0xFF) << 8) + (b & 0xFF));
+}
 
-	i = 0;
-	csrc = (unsigned char *)src;
-	cdst = (unsigned char *)dst;
-	if (!n || dst == src)
-		return (dst);
-	while (n--)
-		*cdst++ = *csrc++;
-	return (dst);
+int	get_tex_colour(t_texture *tex, int x, int y)
+{	
+	if (x >= 0 && x < tex->width && y >= 0 && y < tex->height)
+		return (tex->img_adr[tex->height * y + x]);
+	return (0xFFFFFF);
 }
