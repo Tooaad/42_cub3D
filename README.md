@@ -1,7 +1,7 @@
 # cub3D🕹️
 Recreation of a FPS game using raycasting
 
-[![Image from Gyazo](https://i.gyazo.com/ca3684da0ade3dc60a68979994845ac6.gif)](https://gyazo.com/ca3684da0ade3dc60a68979994845ac6)
+[![Image from Gyazo](https://i.gyazo.com/017405fd6c313b9d6564488bacc0722d.gif)](https://gyazo.com/017405fd6c313b9d6564488bacc0722d)
 
 ## Commands
 
