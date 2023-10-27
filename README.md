@@ -2,7 +2,7 @@
 Recreation of a FPS game using raycasting
 
 [![Image from Gyazo](https://i.gyazo.com/097172798fbebff5796a64a7194f1fde.gif)](https://gyazo.com/097172798fbebff5796a64a7194f1fde)
-> Game is more fluid than the gif
+> Game is more fluid
 
 ## Commands
 
