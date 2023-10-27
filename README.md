@@ -1,12 +1,7 @@
 # cub3D🕹️
 Recreation of a FPS game using raycasting
 
-
-
-https://github.com/Tooaad/42_cub3D/assets/60491687/3ba18b1b-0a0a-4eaf-81e8-6d04dba055bc
-
-
-> Game is more fluid
+https://github.com/Tooaad/42_cub3D/assets/60491687/bc000d7d-2cba-4877-b58e-8765dba25f63
 
 ## Commands
 
