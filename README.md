@@ -16,5 +16,6 @@ https://github.com/Tooaad/42_cub3D/assets/60491687/8b98676a-2334-40d4-95ad-2a47a
 | `←` | turn camera to left |
 
 
-
+## Usage
+- Run `$make bonus && ./cub3D ./img/test.cub`
 
